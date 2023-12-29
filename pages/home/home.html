@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="home.css">
+        <link rel="stylesheet" href="../../loading.css">
+        <title>home</title>
+    </head>
+        <body>
+                <div id="header">
+                    
+                    <header><label for="Bem-vindo">Bem-vindo à área administrativa</label>
+                        
+                        <img src="psychology.png" alt="psi-icon" onmouseover="showMenu()" >
+                    </div>
+                    <nav id="show-menu">
+                        <ul onmouseleave="hideMenu()">
+                            <li>Horários </li>
+                            <li onclick="GoToPacientes()">Pacientes</li>
+                            <li>Documentos</li>
+                            <li>Boletins</li>
+                            <li onclick="logout()">Sair</li>
+                        </ul>
+                    </nav>
+                </header>
+                <div id="add-new"><button id="button-add-new" onclick="createNew()">+</button></div>
+
+                <span id="agenda-span">Pacientes agendados para: <span class="date"><input type="date" name="data" id="dateToShow" onchange="findDados()"></span> </span>
+                
+                <div class="select"><select id="responsavel-select" onchange="findDados()">
+                    <option value="Todos">Todos</option>
+                    <option value="Tamires">Tamires</option>
+                    <option value="Samantha">Samantha</option>
+                </select></div>
+                <div id="agenda">
+                  <div id="pacientes">
+                   
+                  </div>
+                </div>
+                <div id="novo-agendamento">
+                    <h2>Cadastro de Agendamento</h2>
+
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+            
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" required>
+            
+                    <label for="horario">Horário:</label>
+                    <input type="time" id="horario" name="horario" required>
+            
+                    <label for="tipo">Tipo:</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="Consulta Psicológica">Consulta Psicológica </option>
+                        <option value="Sessão de Psicoterapia">Sessão de Psicoterapia</option>
+                    </select>
+            
+                    <label for="responsavel">Responsável:</label>
+                    
+                    <select id="responsavel" name="responsavel" required>
+                        <option value="Samantha">Samantha </option>
+                        <option value="Tamires">Tamires</option>
+                    </select>
+            
+                    <div id="container-agendar">
+                        <button id="button-agendar" onclick="agendar()">Agendar</button>
+                        <button id="button-cancelar" onclick="hideCreateNew()">Cancelar</button>
+                    </div>
+                </div>
+                </div>
+                <div id="overlay"><div id="loading"></div></div>
+                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+                <script src="../../firebase-init.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+                <script src="home.js"></script>
+                <script src="../../firebase-init.js"></script>
+                <script src="../../loading.js"></script>
+          </body>
+          </html>
+          
