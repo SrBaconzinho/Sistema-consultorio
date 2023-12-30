@@ -44,6 +44,45 @@ function logout() {
 
 function createNew() {
   document.getElementById("novo-agendamento").style.display = "flex";
+
+  const db = firebase.firestore();
+  const nomes = [];
+
+  // Busca os documentos da coleção 'pacientes'
+  db.collection("pacientes").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          // Adiciona o nome do paciente ao array
+          nomes.push(doc.data().nome);
+      });
+
+      // Uma vez que os nomes são buscados, popular o select
+      popularSelect(nomes);
+  }).catch((error) => {
+      console.log("Erro ao buscar pacientes:", error);
+  });
+}
+
+
+
+function popularSelect(nomes) {
+  const selectNome = document.getElementById("nome");
+
+  // Limpa as opções existentes
+  selectNome.innerHTML = "";
+
+  // Adiciona uma opção padrão
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.text = "Selecione um nome";
+  selectNome.appendChild(defaultOption);
+
+  // Adiciona as opções dos nomes ao select
+  nomes.forEach((nome) => {
+      const option = document.createElement("option");
+      option.value = nome;
+      option.text = nome;
+      selectNome.appendChild(option);
+  });
 }
 
 function hideCreateNew() {
@@ -80,13 +119,13 @@ function agendar() {
         nome: nameAgendar,
         responsavel: responsavelAgendar,
         tipo: tipoAgendar,
+        agendamento: "Agendado"
       })
       .then((docRef) => alert("Agendamento bem sucedido. ID:" + docRef.id));
     hideCreateNew();
     findDados();
   }
 }
-
 function filtrarPorResponsavel(dadosFiltrados){
 
 
@@ -105,9 +144,65 @@ function filtrarPorResponsavel(dadosFiltrados){
 
 return resultadoFiltradoPorResponsvael;
 
-
-
 }
+
+function doned(button){
+  idPai=button.parentNode.id;
+
+  const db=firebase.firestore();
+
+  const colecao=db.collection("agendamentos").doc(idPai);
+
+  colecao.update({
+    agendamento: "Atendido",
+  }).then(()=>{
+    alert('Agendamento atualizado como "Atendido"!');
+  }).catch(error => {
+    alert("Erro ao cancelar!", error);
+  });
+  findDados();
+
+  
+}
+
+function confirmed(button){
+  idPai=button.parentNode.id;
+
+  const db=firebase.firestore();
+
+  const colecao=db.collection("agendamentos").doc(idPai);
+
+  colecao.update({
+    agendamento: "Confirmado",
+  }).then(()=>{
+    alert('Agendamento atualizado como "Confirmado"!');
+  }).catch(error => {
+    alert("Erro ao cancelar!", error);
+  });
+  findDados();
+
+  
+}
+
+function cancel(button){
+  idPai=button.parentNode.id;
+
+  const db=firebase.firestore();
+
+  const colecao=db.collection("agendamentos").doc(idPai);
+
+  colecao.update({
+    agendamento: "Cancelado",
+  }).then(()=>{
+    alert('Agendamento atualizado como "Cancelado"!');
+  }).catch(error => {
+    alert("Erro ao cancelar!", error);
+  });
+  findDados();
+
+  
+}
+
 function showPacientes(dados) {
   var pacientesDiv = document.getElementById("pacientes");
 
@@ -119,9 +214,13 @@ function showPacientes(dados) {
       if (dados.hasOwnProperty(pacienteId)) {
         var paciente = dados[pacienteId];
 
+
+
         var divPaciente = document.createElement("div");
         divPaciente.setAttribute("class", "paciente"); // Use "class" para aplicar estilos CSS
         divPaciente.setAttribute("id", pacienteId); // Use "class" para aplicar estilos CSS
+
+      
 
         var divInfo = document.createElement("div"); // Esta div engloba as informações do paciente
         divInfo.setAttribute("class", "info");
@@ -144,19 +243,63 @@ function showPacientes(dados) {
         divResponsavel.setAttribute("class", "responsavel");
         divResponsavel.innerHTML =
           "<span class='infos'>Responsável: </span>" + paciente.responsavel;
+        var divCondicao=document.createElement("div");
+        divCondicao.setAttribute("class","condicao");
+        divCondicao.innerHTML="<span class='infos'> Estatus:</span> " +paciente.agendamento;
 
         divInfo.appendChild(divNome);
         divInfo.appendChild(divHorario);
         divInfo.appendChild(divTipo);
         divInfo.appendChild(divResponsavel);
+        divInfo.appendChild(divCondicao);
+        
         const inputButton = document.createElement("button");
         inputButton.setAttribute("onclick", "cancelar(this)");
         inputButton.setAttribute("id", "cancelar");
         inputButton.innerText = "X";
 
+
+
+        //botão para marcar como cancelado
+          const cancelButton = document.createElement("button");
+          cancelButton.setAttribute("onclick", "cancel(this);");
+          cancelButton.setAttribute("id", "cancel");
+          cancelButton.innerHTML = "Cancelado";
+
+          //botão para marcar como confirmado
+          const confirmButton = document.createElement("button");
+          confirmButton.setAttribute("onclick", "confirmed(this);");
+          confirmButton.setAttribute("id", "confirm");
+          confirmButton.innerHTML = "Confirmado";
+
+          //botão para marcar como atendido
+            const atendidoButton = document.createElement("button");
+            atendidoButton.setAttribute("onclick", "doned(this);");
+            atendidoButton.setAttribute("id", "done");
+            atendidoButton.innerHTML = "Atendido";
+
+
+        divPaciente.appendChild(cancelButton);
+        divPaciente.appendChild(atendidoButton);
+        divPaciente.appendChild(confirmButton);
         divPaciente.appendChild(inputButton);
         divPaciente.appendChild(divInfo);
         pacientesDiv.appendChild(divPaciente);
+
+        switch (paciente.agendamento) {
+          case 'Cancelado':
+            divPaciente.style.backgroundColor = '#FF6347'; 
+            break;
+          case 'Confirmado':
+            divPaciente.style.backgroundColor = '#00FF7F'; 
+            break;
+          case 'Atendido':
+            divPaciente.style.backgroundColor = "#B0E0E6"	;
+            break;
+          default:
+            // Se não for nenhum dos valores acima, você pode definir uma cor padrão ou não fazer nada
+            break;
+        }
       }
     }
   } else {

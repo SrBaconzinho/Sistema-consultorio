@@ -46,25 +46,24 @@
       </div>
     </div>
     <div class="overlay-show">
-      <div id="show">
+      <div class="show">
         <h1>Ficha de Paciente</h1>
         <div class="paciente-info">
             <div><label for="nome">Nome:</label> <input type="text" id="nome-show" value="João Silva"></div>
             <div><label for="mae">Nome da Mãe:</label> <input type="text" id="mae-show" value="Maria Silva"></div>
             <div><label for="pai">Nome do Pai:</label> <input type="text" id="pai-show" value="José Silva"></div>
-            <!-- <div><label for="idade">Idade:</label> 28 anos</div> -->
             <div><label for="nascimento">Data de Nascimento:</label> <input type="text" id="data-show" value="1995-03-15"></div>
             <div><label for="endereco">Endereço:</label> <input type="text" id="endereco-show" value="Rua das Flores, 123"></div>
-            <div><label for="sexo">Sexo:</label><input type="text" id="sexo-show" value="Rua das Flores, 123"></div>
-            <div><label for="telefone">Telefone:</label> <input type="tel" id="telefone-show" value="(11) 98765-4321"></div>
-            <div><label for="telefone-sec">Telefone Secundário:</label> <input type="tel" id="telefone-sec-show" value="(11) 99876-5432"></div>
+            <div><label for="sexo">Sexo:</label><select name="sexo" id="sexo-show"><option value="Masculino">Masculino</option><option value="Feminino">Feminino</option><option value="Outro">Outro</option></select></div>
+            <div><label for="telefone">Telefone:</label> <input type="text" id="telefone-show" value="(11) 98765-4321"></div>
+            <div><label for="telefone-sec">Telefone Secundário:</label> <input type="text" id="telefone-sec-show" value="(11) 99876-5432"></div>
             <div><label for="cpf">CPF:</label> <input type="text" id="cpf-show" value="123.456.789-00"></div>
         </div>
         <div class="observacoes">
             <h4>Observações:</h4>
             <textarea id="obs-show" placeholder="Digite as observações aqui..."></textarea>
         </div>
-        <button id="input-button" onclick="editinfos()">Salvar Edições</button>
+        <button id="input-button" class="edit" onclick="editInfos()">Salvar Edições</button>
         <button id="input-button" onclick="fecharInfo()">Fechar</button>
     </div>
 
@@ -84,24 +83,18 @@
               <li onclick="logout()">Sair</li>
           </ul>
       </nav>
-      <div class="pesquisar"><input type="search" name="pesquisar" id="pesquisar" placeholder="Pesquisar"></div>
       <input type="button" value="+" id="addPaciente" onclick="showCadastro()">
       <div class="pacientes" id="pacientes">
         <!-- inserido no js -->
         </div>
       <div class="paciente">
-        <!-- <div class="nome"><span>Nome: </span>Miler Virgulino de Souza</div>
-        <div class="data-nascimento"><span>Data de nascimento: </span>01 de agosto de 1996</div>
-        <div class="telefone1"><span>Telefone 1:</span>87979102270</div>
-        <div class="telefone2"><span>Telefone 1:</span>87979102270</div>
-        <div class="pai"><span>Nome do pai:</span>Miron Virgulino</div>
-        <div class="mae"><span>Nome da mãe:</span>Maria Vaneide de Souza</div> -->
+      
       </div>
     </header>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="../../firebase-init.js"></script>
+    <script src="../home/firebase-init.js"></script>
     <script src="pacientes.js"></script>
     <script src="../../loading.js"></script>
   </body>

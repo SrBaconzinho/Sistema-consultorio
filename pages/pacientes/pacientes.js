@@ -1,7 +1,10 @@
 firebase.initializeApp(firebaseConfig);
 
+
+
 addTohtml(); //prepara para add os pacientes no html
 function addTohtml() {
+
   findPacientes().then((pacientes) => {
     const divPaciente = document.getElementById("pacientes");
 
@@ -27,7 +30,7 @@ function addTohtml() {
           const idade=converterIdade(paciente.data)
           
           divIdade.innerHTML="<span>Idade: </span>"+ idade +" Anos";
-
+//botão para apagar do registro
           const inputButton = document.createElement("button");
           inputButton.setAttribute("onclick", "dellPaciente(this);");
           inputButton.setAttribute("id", "cancelar");
@@ -38,14 +41,18 @@ function addTohtml() {
           boxPaciente.appendChild(divIdade);
           boxPaciente.appendChild(inputButton);
 
+
           divPaciente.appendChild(boxPaciente);
         }
       }
     }
   });
 }
+
+
+
 function fecharInfo(){
-  document.getElementById("show").style.display="none";
+  document.querySelector(".show").style.display="none"; /// mexer nisso
 
   document.getElementById("nome-show").value ="";
   document.getElementById("mae-show").value = "";
@@ -58,14 +65,14 @@ function fecharInfo(){
   document.getElementById("cpf-show").value = "";
   document.getElementById("obs-show").value = "";
 
-
-
 }
 
 function showFicha(elemento){
+  
   const fichaId=elemento.id;
   const colecao=firebase.firestore().collection("pacientes");
-  // const formulario = document.querySelector(".paciente-info");
+  let ficha=document.querySelector(".show");
+  ficha.setAttribute("id",fichaId);
 
   document.getElementById("nome-show").value ="";
   document.getElementById("mae-show").value = "";
@@ -81,7 +88,7 @@ function showFicha(elemento){
   colecao.doc(fichaId).get().then((doc)=>{
     if(doc.exists){
       const dados=doc.data();
-      document.getElementById("show").style.display="block";
+      document.querySelector(".show").style.display="block";
 
       document.getElementById("nome-show").value = dados.nome || "";
       document.getElementById("mae-show").value = dados.mae || "";
@@ -95,31 +102,72 @@ function showFicha(elemento){
       document.getElementById("obs-show").value = dados.obs || "";
       
     }else{
-      console.log("nenhum documento com o id: " + fichaId)
+      alert("nenhum documento com o id: " + fichaId)
     }
   }).catch((error)=>{
-    console.error("error ao buscar documento", error)
+    alert("error ao buscar documento")
   });
 
-
-  console.log("o id é:"+ elemento.id)
 }
 
-function editinfos(){
-  alert("Dados editados com sucesso!");
-}
+function editInfos(){
 
-function filtrarPorResponsavel(){
-  console.log("entrou em filtrar por responsávle")
-}
 
-function converterIdade(dataNascimentostring){
-      // Convertendo a string da data de nascimento para um objeto Date
-      var partesData = dataNascimentostring.split("/");
-      var dataNascimento = new Date(partesData[2], partesData[1] - 1, partesData[0]); // Ano, Mês, Dia
+  isConfirm = confirm("Manter alterações nos dados?");
+
+  if(isConfirm){
+
+    
+    const editName = document.getElementById("nome-show").value;
+  const editMae = document.getElementById("mae-show").value;
+  const editPai = document.getElementById("pai-show").value;
+  const editData = document.getElementById("data-show").value;
+  const editAdd = document.getElementById("endereco-show").value;
+  const editSexo = document.getElementById("sexo-show").value;
+  const editTell1 = document.getElementById("telefone-show").value;
+  const editTell2 = document.getElementById("telefone-sec-show").value;
+  const editCpf = document.getElementById("cpf-show").value;
+  const editObs = document.getElementById("obs-show").value;
   
-      // Obtendo a data atual
-      var dataAtual = new Date();
+  // Obtenha a referência à coleção
+  const db = firebase.firestore();
+  
+  
+  
+  // Adicione o ouvinte de eventos
+  const divId = document.querySelector(".edit").parentElement.id;
+  
+  
+  const colecao = db.collection("pacientes").doc(divId);
+  colecao.update({
+      nome: editName,
+      cpf: editCpf,
+      data: editData,
+      mae: editMae,
+      pai: editPai,
+      sexo: editSexo,
+      tell1: editTell1,
+      tell2: editTell2,
+      obs: editObs,
+      add: editAdd,
+    }).then(() => {
+      alert("Dados editados com sucesso!");
+      fecharInfo();
+      addTohtml();
+    }).catch(error => {
+      alert("Erro ao editar dados:", error);
+    });
+  }
+  };
+
+  
+  function converterIdade(dataNascimentostring){
+    // Convertendo a string da data de nascimento para um objeto Date
+    var partesData = dataNascimentostring.split("/");
+    var dataNascimento = new Date(partesData[2], partesData[1] - 1, partesData[0]); // Ano, Mês, Dia
+    
+    // Obtendo a data atual
+    var dataAtual = new Date();
   
       // Calculando a diferença entre os anos
       var idade = dataAtual.getFullYear() - dataNascimento.getFullYear();
@@ -191,7 +239,6 @@ function cadastrarNew() {
     return dataBrasil;
   }
 
-
 function hideCadastro() {
   document.getElementById("container").style.display = "none";
   document.getElementById("nome").value="";
@@ -211,6 +258,7 @@ function showCadastro() {
 
 function ordenarPorAlfabeto(pacientes) {
   var ArrayObjetos = Object.entries(pacientes); // Convertendo o objeto em uma matriz de [chave, valor]
+  console.log(ArrayObjetos);
   
   ArrayObjetos.sort(function(a, b) {
     var nomeA = a[1].nome.toUpperCase(); // Acessando o nome do objeto
@@ -234,6 +282,14 @@ function ordenarPorAlfabeto(pacientes) {
   return objetosOrdenados;
 }
 
+function pesquisar(){
+
+  let pesquisar=document.getElementById("pesquisar").value;
+  
+
+  return pesquisar
+}
+
 async function findPacientes() {
   //encontra os pacientes no firebase
   try {
@@ -246,11 +302,10 @@ async function findPacientes() {
       pacientes[doc.id] = doc.data();
     });
     const pacientesOrdenados=ordenarPorAlfabeto(pacientes);
-    console.log(pacientes);
 
     return pacientesOrdenados;
   } catch (error) {
-    console.error("Erro na execução da função", error);
+    alert("Erro na execução da função", error);
   }
 }
 function showMenu() {
@@ -273,7 +328,7 @@ function logout() {
     })
     .catch(function (error) {
       // Ocorreu um erro durante o logout
-      console.error("Erro durante o logout:", error);
+      alert("Erro durante o logout:", error);
     });
 }
 

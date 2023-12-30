@@ -55,25 +55,6 @@ img {
   z-index: 2;
 }
 
-.pesquisar input {
-  align-items: center;
-  text-align: center;
-  align-content: center;
-  width: 30vw;
-  height: 4vh;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.pesquisar {
-  margin-left: 34vw;
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  align-items: center;
-  align-content: center;
-}
-
 .paciente {
   visibility: hidden;
 }
@@ -85,11 +66,11 @@ img {
 
 .boxpaciente {
   margin-left: 1vw;
-  width: 97vw;
+  width: 95vw;
   font-size: 24px;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 10px;
   border:outset 2px black;
   align-items: start;
   margin-bottom: 0;
@@ -109,7 +90,7 @@ span {
   color: red;
   border: none;
   display: flex;
-  margin-left: 95vw;
+  margin-left: 93vw;
   margin-top: -5vh;
 }
 
@@ -129,7 +110,7 @@ span {
   width: 2rem;
   height: 2rem;
   margin-left: 97%;
-  margin-top: -5vh;
+  margin-top: 2vh;
 }
 .overlay {
   z-index: 999;
@@ -189,7 +170,7 @@ textarea {
 }
 /* Estilos para a ficha de paciente */
 
-#show {
+.show {
   display: none;
   z-index: 99999;
   left: 24vw;

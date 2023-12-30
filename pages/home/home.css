@@ -7,6 +7,26 @@
 body {
   visibility: hidden;
 }
+#done{
+  position: absolute;
+  margin-left: 70vw;
+  margin-top: 4.6%;
+}
+
+
+#confirm{
+  position: absolute;
+  margin-left: 59.5vw;
+  margin-top: 4.6%;
+}
+
+
+
+#cancel{
+  position: absolute;
+  margin-left: 50vw;
+  margin-top: 4.6%;
+}
 
 #header {
   background-color: #ac7c54;
@@ -30,6 +50,7 @@ img {
 }
 
 #show-menu ul {
+  z-index: 99999;
   background-color: rgba(0, 0, 0, 0);
   width: 15em;
   position: absolute;
@@ -104,7 +125,7 @@ img {
 .paciente:hover {
   background-color: #ac7c5456;
   cursor: pointer;
-  border: solid 1px red;
+  /* border: solid 1px red; */
 }
 #button-add-new:hover {
   border: solid 3px black;
@@ -138,6 +159,7 @@ img {
   
 }
 .paciente {
+  position: relative;
   border: ridge 2px;
   padding-top: 10px;
   padding-bottom: 10px;
