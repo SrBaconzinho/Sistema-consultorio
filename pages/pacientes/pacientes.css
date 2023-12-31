@@ -61,7 +61,7 @@ img {
 
 .boxpaciente:hover {
   cursor: pointer;
-  background-color: grey;
+  background-color: #ffdead56 ;
 }
 
 .boxpaciente {

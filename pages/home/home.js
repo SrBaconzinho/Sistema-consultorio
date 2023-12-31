@@ -26,6 +26,9 @@ function hideMenu() {
 function GoToPacientes() {
   window.location.href = "../pacientes/pacientes.html";
 }
+function goToDocumentos(){
+  window.location.href="../documentos/documentos.html"
+}
 function logout() {
   showLoading();
   firebase
@@ -156,11 +159,11 @@ function doned(button){
   colecao.update({
     agendamento: "Atendido",
   }).then(()=>{
+    findDados();
     alert('Agendamento atualizado como "Atendido"!');
   }).catch(error => {
     alert("Erro ao cancelar!", error);
   });
-  findDados();
 
   
 }
@@ -175,11 +178,11 @@ function confirmed(button){
   colecao.update({
     agendamento: "Confirmado",
   }).then(()=>{
+    findDados();
     alert('Agendamento atualizado como "Confirmado"!');
   }).catch(error => {
     alert("Erro ao cancelar!", error);
   });
-  findDados();
 
   
 }
@@ -194,11 +197,11 @@ function cancel(button){
   colecao.update({
     agendamento: "Cancelado",
   }).then(()=>{
+    findDados();
     alert('Agendamento atualizado como "Cancelado"!');
   }).catch(error => {
     alert("Erro ao cancelar!", error);
   });
-  findDados();
 
   
 }
@@ -288,13 +291,13 @@ function showPacientes(dados) {
 
         switch (paciente.agendamento) {
           case 'Cancelado':
-            divPaciente.style.backgroundColor = '#FF6347'; 
+            divPaciente.style.backgroundColor = '#ff3b3b59'; 
             break;
           case 'Confirmado':
-            divPaciente.style.backgroundColor = '#00FF7F'; 
+            divPaciente.style.backgroundColor = '#5b6bff33'; 
             break;
           case 'Atendido':
-            divPaciente.style.backgroundColor = "#B0E0E6"	;
+            divPaciente.style.backgroundColor = "#00ff081f"	;
             break;
           default:
             // Se não for nenhum dos valores acima, você pode definir uma cor padrão ou não fazer nada

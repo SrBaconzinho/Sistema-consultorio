@@ -336,6 +336,11 @@ function goToHorario() {
   window.location.href = "../../pages/home/home.html";
 }
 
+function goToDocumentos(){
+  window.location.href="../documentos/documentos.html"
+}
+
+
 function dellPaciente(button) {
   var docID = button.parentNode.id;
   const db = firebase.firestore();
