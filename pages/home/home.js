@@ -44,12 +44,21 @@ function logout() {
       console.error("Erro durante o logout:", error);
     });
 }
+function ordenarArrayAlfabeticamente(arr) {
+  // Cria uma cópia da array para evitar modificar a original
+  const copiaArr = [...arr];
+
+  // Usa o método sort() para ordenar a array
+  copiaArr.sort((a, b) => a.localeCompare(b));
+
+  return copiaArr;
+}
 
 function createNew() {
   document.getElementById("novo-agendamento").style.display = "flex";
 
   const db = firebase.firestore();
-  const nomes = [];
+  let nomes = [];
 
   // Busca os documentos da coleção 'pacientes'
   db.collection("pacientes").get().then((querySnapshot) => {
@@ -59,6 +68,7 @@ function createNew() {
       });
 
       // Uma vez que os nomes são buscados, popular o select
+      nomes=ordenarArrayAlfabeticamente(nomes);
       popularSelect(nomes);
   }).catch((error) => {
       console.log("Erro ao buscar pacientes:", error);

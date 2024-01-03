@@ -99,3 +99,21 @@
     height: 1.8rem;
     font-size: 18px;
   }
+
+  .responsvael{
+    width: 100%;
+    margin-top: 20px;
+   
+  }
+
+  #responsavel{
+    height: 1.8rem;
+    font-size: 18px;
+    margin-top: 20px;
+    width: 30%;
+    display: block;
+    margin-left: 30vw;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+  }

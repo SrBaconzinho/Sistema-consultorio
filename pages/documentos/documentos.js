@@ -18,25 +18,90 @@ function showMenu() {
     window.location.href="documentos.html"
   }
 
+  carregarNomes();
+  carregarPsi();
 
-  let nomes = [];
-const db=firebase.firestore();
-  firebase.initializeApp(firebaseConfig);
-
-   // Busca os documentos da coleção 'pacientes'
-   db.collection("pacientes").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        // Adiciona o nome do paciente ao array
-        nomes.push(doc.data().nome);
-    });
+  function carregarPsi(){
+    const db = firebase.firestore();
+    const nomesPsi = [];
     
+  
+    return db.collection("responsavel").get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // Verifica se a chave "nome" existe no documento antes de adicioná-la à array
+          if (doc.data().nome) {
+            nomesPsi.push(doc.data().nome);
+          }
+        });
+  
+        return selectPsi(nomesPsi);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar documentos na coleção 'responsavel':", error);
+        throw error; // Você pode escolher lidar com o erro de outra forma se preferir
+      });
+      
+  }
 
-    // Uma vez que os nomes são buscados, popular o select
-    popularSelect(nomes);
-}).catch((error) => {
-    console.log("Erro ao buscar pacientes:", error);
-});
+ function selectPsi(nomesPsi){
+    let selectPsi=document.getElementById("responsavel");
 
+    selectPsi.innerHTML="";
+
+     // Adiciona uma opção padrão
+     const defaultOption = document.createElement("option");
+     defaultOption.value = "";
+     defaultOption.text = "Selecione um nome";
+     selectPsi.appendChild(defaultOption);
+
+      // Adiciona as opções dos nomes ao select
+    nomesPsi.forEach((nome) => {
+      const option = document.createElement("option");
+      option.value = nome;
+      option.text = nome;
+      selectPsi.appendChild(option);
+  });
+
+}
+
+function ordenarArrayAlfabeticamente(arr) {
+  // Cria uma cópia da array para evitar modificar a original
+  const copiaArr = [...arr];
+
+  // Usa o método sort() para ordenar a array
+  copiaArr.sort((a, b) => a.localeCompare(b));
+
+  return copiaArr;
+}
+  function carregarNomes() {
+    let nomes = [];
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  
+    // Busca os documentos da coleção 'agendamentos'
+    return db.collection("agendamentos").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // Verifica se o nome já existe no array antes de adicioná-lo
+        if (!nomes.includes(doc.data().nome)) {
+          nomes.push(doc.data().nome);
+        }
+      });
+  
+      // Uma vez que os nomes são buscados, popular o select
+      nomes=ordenarArrayAlfabeticamente(nomes);
+      popularSelect(nomes);
+    });
+  }
+  
+  // Verifique se a função já foi executada
+  if (!localStorage.getItem('funcaoExecutada')) {
+    // Se não tiver sido executada, execute a função e marque no localStorage
+    carregarNomes().then(() => {
+      localStorage.setItem('funcaoExecutada', 'true');
+    });
+  }
 
 function popularSelect(nomes) {
     const selectNome = document.getElementById("name");
@@ -59,18 +124,39 @@ function popularSelect(nomes) {
     });
   }
 
-  function gerarDocumento(){
+function gerarDocumento(){
     const nome = document.getElementById("name").value;
     const dataInicio = document.getElementById("dataInicio").value;
     const dataFim = document.getElementById("dataFim").value;
+    const nomePsi=document.getElementById("responsavel").value;
     const db = firebase.firestore();
+    let crp;
+    
+
+    db.collection("responsavel").where('nome', '==', nomePsi).get().then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+          // Se houver um documento correspondente, atualize o valor de crp com o valor do campo crp desse documento
+          crp = querySnapshot.docs[0].data().crp;
+        }
+        const arrayInfos = [nome, data1, data2, nomePsi,crp];
+  
+
+      localStorage.setItem("arrayInfos",JSON.stringify(arrayInfos));
+      
+  
+  }).catch((error) => {
+      console.error("Erro ao buscar o documento:", error);
+  });
+
+    let data1 = FormatDate(dataInicio);
+    let data2 = FormatDate(dataFim);
+
 
     if(!nome || !dataInicio || !dataFim){
         alert("Todos os campos precisam ser preenchidos!");
     }
     else{
-        let data1 = FormatDate(dataInicio);
-        let data2 = FormatDate(dataFim);
+        
         
         db.collection("agendamentos").get().then((querySnapshot) => {
             let agendamentosFiltrados = [];
@@ -103,34 +189,40 @@ function popularSelect(nomes) {
     return dataBrasil;
 }
 function gerarFichas(datasOrdenadas) {
-    // Criar um novo documento
-    const fichaWindow = window.open('ficha.html', '_blank');
-    
-    // Esperar que a página seja carregada antes de adicionar as fichas
-    fichaWindow.addEventListener('load', function() {
-        const fichaDocument = fichaWindow.document;
 
-        datasOrdenadas.forEach(data => {
-            const ficha = fichaDocument.createElement('div');
-            ficha.className = 'ficha';
+  // const arrayInfos=JSON.parse(localStorage.getItem("arrayInfos"));
 
-            const colunaData = fichaDocument.createElement('div');
-            colunaData.className = 'coluna';
-            colunaData.innerText = data;
+  // Criar um novo documento
+  const fichaWindow = window.open('ficha.html', '_blank');
+  
+  // Esperar que a página seja carregada antes de adicionar as fichas
+  fichaWindow.addEventListener('load', function() {
+      const fichaDocument = fichaWindow.document;
 
-            const colunaPaciente = fichaDocument.createElement('div');
-            colunaPaciente.className = 'coluna';
-            // Aqui você pode adicionar espaço para assinatura do paciente, se necessário
 
-            const colunaProfissional = fichaDocument.createElement('div');
-            colunaProfissional.className = 'coluna';
-            // Aqui você pode adicionar espaço para assinatura do profissional, se necessário
 
-            ficha.appendChild(colunaData);
-            ficha.appendChild(colunaPaciente);
-            ficha.appendChild(colunaProfissional);
+      datasOrdenadas.forEach(data => {
+          const ficha = fichaDocument.createElement('div');
+          ficha.className = 'ficha';
 
-            fichaDocument.body.appendChild(ficha);
-        });
-    });
+          const colunaData = fichaDocument.createElement('div');
+          colunaData.className = 'coluna';
+          colunaData.innerText = data;
+
+          const colunaPaciente = fichaDocument.createElement('div');
+          colunaPaciente.className = 'coluna';
+          // Aqui você pode adicionar espaço para assinatura do paciente, se necessário
+
+          const colunaProfissional = fichaDocument.createElement('div');
+          colunaProfissional.className = 'coluna';
+          // Aqui você pode adicionar espaço para assinatura do profissional, se necessário
+
+          ficha.appendChild(colunaData);
+          ficha.appendChild(colunaPaciente);
+          ficha.appendChild(colunaProfissional);
+
+          fichaDocument.body.appendChild(ficha); // Adicionando a ficha ao corpo do documento
+      });
+      
+  });
 }
