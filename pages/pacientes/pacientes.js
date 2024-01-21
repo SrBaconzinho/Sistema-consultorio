@@ -360,6 +360,9 @@ function goToHorario() {
 function goToDocumentos(){
   window.location.href="../documentos/documentos.html"
 }
+function goToAlunos(){
+  window.location.href='../alunos/alunos.html'
+}
 
 
 function dellPaciente(button) {

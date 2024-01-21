@@ -13,6 +13,43 @@ function verifyAuthentication() {
   });
 }
 // inserir funções do menu
+
+function showMenu() {
+  document.getElementById("show-menu").querySelector("ul").style.display =
+    "block";
+}
+function hideMenu() {
+  document.getElementById("show-menu").querySelector("ul").style.display =
+    "none";
+}
+function logout() {
+  showLoading();
+  firebase
+    .auth()
+    .signOut()
+    .then(function () {
+      // Logout bem-sucedido
+      window.location.href = "../../index.html";
+      // Redirecione ou execute outras ações após o logout, se necessário
+    })
+    .catch(function (error) {
+      // Ocorreu um erro durante o logout
+      alert("Erro durante o logout:", error);
+    });
+}
+
+function goToHorario() {
+  window.location.href = "../../pages/home/home.html";
+}
+
+function goToDocumentos(){
+  window.location.href="../documentos/documentos.html"
+}
+
+function goToAlunos(){
+  window.location.href='../alunos/alunos.html'
+}
+
 function showCadastro(){
   document.getElementById('container').style.display="block";
 }
@@ -22,12 +59,80 @@ function hideCadastro(){
 }
 
 function cadastrarNew(){
-  // Adicionar lógica para cadastrar um novo aluno
+  let newName = document.getElementById("nome").value;
+  let newData = document.getElementById("dataNascimento").value;
+  let newAdd=document.getElementById("endereco").value;
+  let newCpf = document.getElementById("cpf").value;
+  let newSexo = document.getElementById("sexo").value;
+  let newServico = document.getElementById("servico").value;
+  let newTell = document.getElementById("telefone1").value;
+  let newObs = document.getElementById("observacao").value;
+
+  data=FormatDate(newData);
+
+  if(!newName|| !newData || !newAdd || !newCpf || !newSexo || !newServico || !newTell){
+    alert("Todos os campos obrigatórios devem ser preenchidos")
+  }else{
+    const db=firebase.firestore();
+    const colecao=db.collection("alunos");
+    colecao.add({
+      nome: newName,
+      data: data,
+      add: newAdd,
+      cpf: newCpf,
+      sexo: newSexo,
+      tell: newTell,
+      obs: newObs,
+      servico: newServico,
+    })
+    addTohtml();
+    hideCadastro();
+  }
+}
+
+function FormatDate(dataToConvert) {
+  let dataBrasil = dataToConvert.split("-").reverse().join("/");
+
+  return dataBrasil;
 }
 
 function showFicha(div) {
-  let idAluno = div.id;
-  console.log(idAluno);
+  const colecao=firebase.firestore().collection("alunos");
+  let fichaId = div.id;
+  let ficha=document.querySelector('.show');
+  ficha.setAttribute('id', fichaId);
+  console.log(fichaId);
+  document.getElementById('nome-show').value="";
+  document.getElementById('data-show').value="";
+  document.getElementById('endereco-show').value="";
+  document.getElementById('cpf-show').value="";
+  document.getElementById('sexo-show').value="";
+  document.getElementById('servico-show').value="";
+  document.getElementById('tell-show').value="";
+  document.getElementById('obs-show').value="";
+
+  colecao.doc(fichaId).get().then((doc)=>{
+    if(doc.exists){
+      const dados=doc.data();
+      document.querySelector(".show").style.display="block";
+
+  document.getElementById('nome-show').value=dados.nome || "";
+  document.getElementById('data-show').value= dados.data||"";
+  document.getElementById('endereco-show').value=dados.add ||"";
+  document.getElementById('cpf-show').value=dados.cpf || "";
+  document.getElementById('sexo-show').value=dados.sexo || "";
+  document.getElementById('servico-show').value=dados.servico ||"";
+  document.getElementById('tell-show').value= dados.tell || "";
+  document.getElementById('obs-show').value=dados.obs || "";
+      
+
+
+    }else{
+      alert("nenhum documento com o id:" + fichaId)
+    }
+  }).catch((error)=>
+  alert(error.message))
+
 }
 
 function addTohtml() {
@@ -83,6 +188,68 @@ function addTohtml() {
       }
     }
   })
+}
+
+function fecharInfo(){
+
+  document.getElementById('nome-show').value="";
+  document.getElementById('data-show').value="";
+  document.getElementById('endereco-show').value="";
+  document.getElementById('cpf-show').value="";
+  document.getElementById('sexo-show').value="";
+  document.getElementById('servico-show').value="";
+  document.getElementById('tell-show').value="";
+  document.getElementById('obs-show').value="";
+
+  document.querySelector(".show").style.display="none";
+
+
+}
+
+function editInfos(){
+
+  isConfirm = confirm("Manter alterações nos dados?");
+
+  if(isConfirm){
+
+  const editNome=document.getElementById('nome-show').value;
+  const editData=document.getElementById('data-show').value;
+  const editAdd=document.getElementById('endereco-show').value;
+  const editCpf=document.getElementById('cpf-show').value;
+  const editSexo=document.getElementById('sexo-show').value;
+  const editServico=document.getElementById('servico-show').value;
+  const editTell=document.getElementById('tell-show').value;
+  const editObs=document.getElementById('obs-show').value;
+
+  const db=firebase.firestore();
+
+  const divId=document.querySelector(".edit").parentElement.id;
+
+  const colecao=db.collection('alunos').doc(divId);
+
+  colecao.update({
+    nome: editNome,
+    data: editData,
+    add: editAdd,
+    cpf: editCpf,
+    sexo: editSexo,
+    servico: editServico,
+    tell: editTell,
+    obs: editObs,
+  }).then(()=>{
+    alert('Dados editados com sucesso')
+
+    fecharInfo()
+    addTohtml()
+  }).catch(error=>{
+    alert(error.message)
+  })
+
+  alert(divId);
+
+  }
+
+
 }
 
 async function findAlunos() {

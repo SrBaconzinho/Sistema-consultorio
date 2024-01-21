@@ -35,6 +35,9 @@ function showMenu() {
   function goToDocumentos(){
     window.location.href="documentos.html"
   }
+  function goToAlunos(){
+    window.location.href='../alunos/alunos.html'
+  }
 
  
 
