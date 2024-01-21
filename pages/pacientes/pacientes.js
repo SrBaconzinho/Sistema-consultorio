@@ -1,8 +1,26 @@
+function verifyAuthentication() {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // Se o usuário estiver autenticado, faça alguma coisa (ex: redirecione para a página de home)
+      console.log('Usuário autenticado:', user.uid);
+      addTohtml();
+    } else {
+      // Se o usuário não estiver autenticado, redirecione para a página de login ou tome outra ação
+      console.log('Usuário não autenticado');
+      // Redirecionar para a página de login, por exemplo
+      window.location.replace("../../index.html");
+    }
+  });
+}
+
+verifyAuthentication();
+
 firebase.initializeApp(firebaseConfig);
 
 
 
-addTohtml(); //prepara para add os pacientes no html
+addTohtml(); 
+//prepara para add os pacientes no html
 function addTohtml() {
 
   findPacientes().then((pacientes) => {
@@ -258,7 +276,7 @@ function showCadastro() {
 
 function ordenarPorAlfabeto(pacientes) {
   var ArrayObjetos = Object.entries(pacientes); // Convertendo o objeto em uma matriz de [chave, valor]
-  console.log(ArrayObjetos);
+  
   
   ArrayObjetos.sort(function(a, b) {
     var nomeA = a[1].nome.toUpperCase(); // Acessando o nome do objeto
@@ -291,6 +309,7 @@ function pesquisar(){
 }
 
 async function findPacientes() {
+
   //encontra os pacientes no firebase
   try {
     const pacientesCollection = firebase.firestore().collection("pacientes");
@@ -302,10 +321,12 @@ async function findPacientes() {
       pacientes[doc.id] = doc.data();
     });
     const pacientesOrdenados=ordenarPorAlfabeto(pacientes);
+    
 
     return pacientesOrdenados;
   } catch (error) {
     alert("Erro na execução da função", error);
+    console.log(error.message);
   }
 }
 function showMenu() {

@@ -1,3 +1,21 @@
+function verifyAuthentication() {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // Se o usuário estiver autenticado, faça alguma coisa (ex: redirecione para a página de home)
+      console.log('Usuário autenticado:', user.uid);
+      carregarNomes();
+      carregarPsi();
+    } else {
+      // Se o usuário não estiver autenticado, redirecione para a página de login ou tome outra ação
+      console.log('Usuário não autenticado');
+      // Redirecionar para a página de login, por exemplo
+      window.location.replace("../../index.html");
+    }
+  });
+}
+
+verifyAuthentication();
+
 function showMenu() {
     document.getElementById("show-menu").querySelector("ul").style.display =
       "block";
@@ -18,8 +36,7 @@ function showMenu() {
     window.location.href="documentos.html"
   }
 
-  carregarNomes();
-  carregarPsi();
+ 
 
   function carregarPsi(){
     const db = firebase.firestore();
@@ -178,6 +195,7 @@ function gerarDocumento(){
 
             // Aqui, agendamentosFiltrados contém os documentos que satisfazem as condições
             gerarFichas(datasOrdenadas);
+            console.log(datasOrdenadas);
         });
     }
 }
