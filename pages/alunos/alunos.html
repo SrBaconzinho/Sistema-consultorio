@@ -12,10 +12,6 @@
         <form>
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome" >
-          <label for="nomeMae">Nome da mãe:</label>
-          <input type="text" id="nomeMae" name="nomeMae" >
-          <label for="nomePai">Nome do pai:</label>
-          <input type="text" id="nomePai" name="nomePai" >
           <label for="dataNascimento">Data de nascimento:</label>
           <input type="date" id="dataNascimento" name="dataNascimento" >
           <label for="endereco">Endereço:</label>
@@ -28,15 +24,10 @@
               <option value="feminino">Feminino</option>
               <option value="outro">Outro</option>
           </select>
-          <label for="status">Status:</label>
-          <select id="status" >
-            <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
-          </select>
+          <label for="servico">Serviço prestado:</label>
+          <input type="text" id="servico">
           <label for="telefone1">Telefone 1:</label>
           <input type="text" id="telefone1" name="telefone1" placeholder="(99) 99999-9999" >
-          <label for="telefone2">Telefone 2:</label>
-          <input type="text" id="telefone2" name="telefone2" placeholder="(99) 99999-9999">
           <label for="observacao">Observação:</label>
           <textarea id="observacao" name="observacao"></textarea>
           <input type="button" id="input-button" value="Cadastrar" onclick="cadastrarNew()">
@@ -83,8 +74,9 @@
               <li onclick="logout()">Sair</li>
           </ul>
       </nav>
-      <input type="button" value="+" id="addPaciente" onclick="showCadastro()">
-      <div class="pacientes" id="pacientes">
+      <input type="button" value="+" id="addAluno" onclick="showCadastro()">
+      <div class="alunos" id="alunos">
+       
         <!-- inserido no js -->
         </div>
       <div class="paciente">

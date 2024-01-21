@@ -55,37 +55,46 @@
     z-index: 2;
   }
   
-  .paciente {
-    visibility: hidden;
+  .aluno {
+    visibility:visible;
   }
   
-  .boxpaciente:hover {
+  .boxAluno:hover {
     cursor: pointer;
     background-color: #ffdead56 ;
   }
-  
-  .boxpaciente {
-    margin-left: 1vw;
-    width: 95vw;
-    font-size: 24px;
+
+  .alunos{
+    margin-top: 10px;
+    position: absolute;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
-    border:outset 2px black;
+    overflow: auto;
+  }
+  
+  .boxAluno {
+    position: relative;
+    margin-left: 1vw;
+    min-width: 95vw;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    border: #333 ridge 2px;
     align-items: start;
     margin-bottom: 0;
     padding-bottom: 0;
-    height: 13vh;
+    min-height: 19vh;
+    overflow: auto;
   }
   
-  .boxpaciente #cancelar:hover {
+  .boxAluno #cancelar:hover {
     font-weight: 700;
   }
   span {
     font-weight: 700;
   }
   
-  .boxpaciente #cancelar {
+  .boxAluno #cancelar {
     background-color: transparent;
     color: red;
     border: none;
@@ -94,11 +103,11 @@
     margin-top: -5vh;
   }
   
-  #addPaciente:hover {
+  #addAluno:hover {
     border: solid 2px black;
   }
   
-  #addPaciente {
+  #addAluno {
     z-index: 2;
     position: absolute;
     font-weight: 600;
@@ -134,6 +143,7 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 40%;
+    z-index: 9999;
   }
   
   label {
@@ -166,7 +176,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
   }
   /* Estilos para a ficha de paciente */
   
@@ -183,19 +193,6 @@
     
   }
   
-  .paciente-info {
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .paciente-info > div {
-    margin-bottom: 10px;
-  }
-  
-  .paciente-info > div:last-child {
-    margin-bottom: 0;
-  }
   
   .observacoes {
     margin-bottom: 20px;
@@ -216,7 +213,6 @@
     border-radius: 4px;
   }
   
-  /* Estilos para o título da ficha */
   h1 {
     text-align: center;
     font-size: 24px;
