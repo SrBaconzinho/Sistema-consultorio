@@ -182,14 +182,14 @@ img {
   font-size: 24px;
 }
 #novo-agendamento {
-  top: 15%;
+  top: 8%;
   left: 25%;
   z-index: 50;
   position: fixed;
   display: none;
   flex-direction: column;
   width: 40%;
-  height: 75%;
+  height: 85%;
   background-color: #d3d3d3;
   padding: 20px;
   border-radius: 8px;
@@ -229,6 +229,7 @@ select {
   cursor: pointer;
 }
 #button-agendar {
+  position: absolute;
   width: 100px;
   height: 30px;
   border-radius: 20px;
@@ -238,8 +239,49 @@ select {
   cursor: pointer;
 }
 #button-cancelar {
+  position: relative;
   width: 100px;
   height: 30px;
   border-radius: 20px;
-  margin-left: 60%;
+  left: 70%;
+  
+  
+}
+
+#container-agendar{
+  display: flex;
+  flex-direction: row;
+}
+
+#recorrente-content{
+  display: none;
+  flex-direction: row;
+  justify-content: left;
+  height: 2rem;
+  margin-bottom: 1rem;
+  
+  
+}
+#recorrente{
+  display: flex;
+  position: relative;
+  width: 5rem;
+  margin-top: 0.1rem;
+  padding-left: 0;
+
+}
+
+.checkbox{
+  display: flex;
+  flex-direction: row;
+}
+
+#frequencia{
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  height: 2.5rem;
+  font-size: 1rem;
+  width: 20%;
 }

@@ -79,6 +79,23 @@ function createNew() {
   });
 }
 
+function frequenciaAgendar(){
+
+  const selectBox=document.getElementById("recorrente").checked
+  console.log(selectBox)
+
+  if(selectBox){
+
+    document.getElementById("recorrente-content").style.display="flex"
+    
+
+  }else{
+    document.getElementById("recorrente-content").style.display="none"
+
+    
+  }
+}
+
 
 
 function popularSelect(nomes) {
