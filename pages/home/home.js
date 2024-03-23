@@ -143,10 +143,26 @@ function agendar() {
   ) {
     alert("Todos os campos devem ser preenchidos");
   } else {
-    novaData = FormatDate(dataAgendar);
+    
+    let frequenciaSemanal=parseInt(document.getElementById("frequencia-n").value)
+
+    let proximosDias=proximosDiasDaSemana(dataAgendar,frequenciaSemanal-1)
+    
     const db = firebase.firestore();
     const colecao = db.collection("agendamentos");
-    colecao
+
+    for(let i=0;i<proximosDias.length; i++){
+
+      
+      let dataAgendar=proximosDias[i];
+      
+      let novaData=FormatDate(dataAgendar);
+
+      let contador = i+1
+      
+      
+      
+      colecao
       .add({
         data: novaData,
         horario: horarioAgendar,
@@ -155,11 +171,49 @@ function agendar() {
         tipo: tipoAgendar,
         agendamento: "Agendado"
       })
-      .then((docRef) => alert("Agendamento bem sucedido. ID:" + docRef.id));
+      .then((docRef) => alert("Agendamentado " + contador + " vezes"));
+    
+    }
+
+
     hideCreateNew();
     findDados();
   }
 }
+
+
+function proximosDiasDaSemana(dataString, numeroSaidas) {
+  const parts = dataString.split("-");
+  const ano = parseInt(parts[0], 10);
+  const mes = parseInt(parts[1], 10) - 1;
+  const dia = parseInt(parts[2], 10);
+
+  let listaProximas = [];
+
+  const data = new Date(ano, mes, dia);
+
+  let firstDay = `${ano}-${(mes + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+
+  listaProximas.push(firstDay);
+
+  for (let i = 0; i < numeroSaidas; i++) {
+      data.setDate(data.getDate() + 7); // Adiciona 7 dias à data
+
+      // Atualiza as variáveis de ano, mês e dia
+      const novoAno = data.getFullYear();
+      const novoMes = data.getMonth() + 1;
+      const novoDia = data.getDate();
+
+      // Formata a string de data com zero à esquerda se necessário
+      let strData = `${novoAno}-${novoMes.toString().padStart(2, '0')}-${novoDia.toString().padStart(2, '0')}`;
+
+      listaProximas.push(strData);
+  }
+
+  return listaProximas;
+}
+    
+
 function filtrarPorResponsavel(dadosFiltrados){
 
 
