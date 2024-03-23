@@ -180,9 +180,14 @@ function agendar() {
     findDados();
   }
 }
-
-
 function proximosDiasDaSemana(dataString, numeroSaidas) {
+
+  let diasPular;
+
+    let frequenciaDesejada = document.getElementById("frequencia").value;
+    diasPular = frequenciaDesejada === "semanal" ? 7 : 14;
+  
+
   const parts = dataString.split("-");
   const ano = parseInt(parts[0], 10);
   const mes = parseInt(parts[1], 10) - 1;
@@ -193,26 +198,21 @@ function proximosDiasDaSemana(dataString, numeroSaidas) {
   const data = new Date(ano, mes, dia);
 
   let firstDay = `${ano}-${(mes + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
-
   listaProximas.push(firstDay);
 
   for (let i = 0; i < numeroSaidas; i++) {
-      data.setDate(data.getDate() + 7); // Adiciona 7 dias à data
+    data.setDate(data.getDate() + diasPular);
 
-      // Atualiza as variáveis de ano, mês e dia
-      const novoAno = data.getFullYear();
-      const novoMes = data.getMonth() + 1;
-      const novoDia = data.getDate();
+    const novoAno = data.getFullYear();
+    const novoMes = data.getMonth() + 1;
+    const novoDia = data.getDate();
 
-      // Formata a string de data com zero à esquerda se necessário
-      let strData = `${novoAno}-${novoMes.toString().padStart(2, '0')}-${novoDia.toString().padStart(2, '0')}`;
-
-      listaProximas.push(strData);
+    let strData = `${novoAno}-${novoMes.toString().padStart(2, '0')}-${novoDia.toString().padStart(2, '0')}`;
+    listaProximas.push(strData);
   }
 
   return listaProximas;
 }
-    
 
 function filtrarPorResponsavel(dadosFiltrados){
 

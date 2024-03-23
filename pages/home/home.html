@@ -31,7 +31,9 @@
                 <div class="select"><select id="responsavel-select" onchange="findDados()">
                     <option value="Todos">Todos</option>
                     <option value="Tamires">Tamires</option>
-                    <option value="Samantha">Samantha</option>
+                    <option value="Agnez Santos">Agnez Santos</option>
+                    <option value="Ana Claudia">Ana Cláudia</option>
+                    <option value="Flavia Chaves">Flávia Chaves</option>
                 </select></div>
                 <div id="agenda">
                   <div id="pacientes">
@@ -60,21 +62,18 @@
                     <label for="responsavel">Responsável:</label>
                     
                     <select id="responsavel" name="responsavel" required>
-                        <option value="Samantha">Samantha </option>
-                        <option value="Tamires">Tamires</option>
+                    <option value="Todos">Todos</option>
+                    <option value="Tamires">Tamires</option>
+                    <option value="Agnez Santos">Agnez Santos</option>
+                    <option value="Ana Claudia">Ana Cláudia</option>
+                    <option value="Flavia Chaves">Flávia Chaves</option>
                     </select>
-
-                    <div class="checkbox">
-
-                        <label for="checkbox"> Paciente recorrente</label>
-                        <input type="checkbox" name="checkbox" id="recorrente" onchange="frequenciaAgendar()">
-                    </div>
 
                     <div id="recorrente-content">
                         <select name="frequencia" id="frequencia">
                             <option value="semanal">Semanal</option>
                             <option value="quinzenal">Quinzenal</option>
-                            <option value="mensal">Mensal</option>
+                            
                         </select>
                         <select name="frequencia" id="frequencia-n" onchange="semanal()">
                             <option value="" selected>Repetir por:</option>

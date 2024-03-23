@@ -254,7 +254,7 @@ select {
 }
 
 #recorrente-content{
-  display: none;
+  display: flex;
   flex-direction: row;
   justify-content: left;
   height: 2rem;
